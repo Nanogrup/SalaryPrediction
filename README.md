@@ -6,25 +6,7 @@ This is a basic Flask application Dockerized for easy deployment.
 
 ### 1. Install Docker
 
-#### For macOS:
-
-1. **Docker Desktop**: Download and install Docker Desktop from the [Docker website](https://www.docker.com/products/docker-desktop).
-
-2. **System Requirements**: Ensure your macOS version meets the [Docker Desktop system requirements](https://docs.docker.com/desktop/install/#what-to-know-before-you-install).
-
-#### For Windows:
-
-1. **Docker Desktop**: Download and install Docker Desktop from the [Docker website](https://www.docker.com/products/docker-desktop).
-
-2. **System Requirements**: Ensure your Windows version meets the [Docker Desktop system requirements](https://docs.docker.com/desktop/install/#what-to-know-before-you-install).
-
-#### For Linux:
-
-1. **Ubuntu**: Follow the [official Docker installation instructions for Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
-
-2. **Debian**: Follow the [official Docker installation instructions for Debian](https://docs.docker.com/engine/install/debian/).
-
-3. **CentOS**: Follow the [official Docker installation instructions for CentOS](https://docs.docker.com/engine/install/centos/).
+* Download and install Docker Desktop from the [Docker website](https://www.docker.com/products/docker-desktop).
 
 
 ### 2. Clone the Repository
