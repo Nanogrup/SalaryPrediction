@@ -5,46 +5,83 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
- 
-  </head>
-  <body style="background-color: #0a2640 !important">
-  <main class="main" id="top">
-  
-  <div class="bg-dark"><img class="img-fluid position-absolute end-0" src="{{ url_for('static',filename='hero/hero-bg.png')}}" alt=""/>
-<section>
-    <div class="container bg-dark overflow-hidden rounded-1">
-      <div class="bg-holder" style="background-image:url(assets/img/promo/promo-bg.png);"></div>
-      <div class="px-5 py-7 position-relative" style="background-color: slategrey;border-radius:6px;overflow-y: scroll;">
-        <h1 class="text-center w-lg-75 mx-auto fs-lg-6 fs-md-4 fs-3 text-white">Enter information for salary prediction</h1>
-        <div class="row justify-content-center mt-5">
-          <div class="col-auto w-100 w-lg-50"><input class="form-control mb-2 border-light fs-1" type="text" placeholder="Your title" /></div>
-          <div class="col-auto w-100 w-lg-50 ">
-            <select class="form-control mb-2 border-light fs-1 custom-select">
-                <option value="" disabled selected>Select your gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-        </div>
-        <div class="col-auto w-100 w-lg-50 ">
-            <select class="form-control mb-2 border-light fs-1 custom-select">
-                <option value="" disabled selected>Select your education level</option>
-                <option value="bachelor">Bachelor’s</option>
-                <option value="master">Master’s</option>
-                <option value="phd">PhD</option>
-            </select>
-        </div>
-          <div class="col-auto w-100 w-lg-50"><input class="form-control mb-2 border-light fs-1" type="text" placeholder="Your age" /></div>
-          <div class="col-auto w-100 w-lg-50"><input style="margin-left: -10rem;" class="form-control mb-2 border-light fs-1" type="text" placeholder="Experience year" /></div>
-          <div class="col-auto mt-2 mt-lg-0"><button class="btn btn-success text-dark fs-1">Guess now</button></div>
-        </div>
-      </div>
+    <!-- Include jQuery and jQuery UI CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body style="background-color: #0a2640 !important">
+<main class="main" id="top">
+    <div class="bg-dark">
+        <img class="img-fluid position-absolute end-0" src="{{ url_for('static',filename='hero/hero-bg.png')}}" alt=""/>
+        <section>
+            <div class="container bg-dark overflow-hidden rounded-1">
+                <div class="bg-holder" style="background-image:url(assets/img/promo/promo-bg.png);"></div>
+                <div class="px-5 py-7 position-relative" style="background-color: slategrey; border-radius:6px; overflow-y: scroll;">
+                    <h1 class="text-center w-lg-75 mx-auto fs-lg-6 fs-md-4 fs-3 text-white">Enter information for salary prediction</h1>
+                    <div class="row justify-content-center mt-5">
+                        <div class="col-auto w-100 w-lg-50">
+                            <form method="post" action="{{ url_for('predict') }}">
+                                <div class="form-group">
+                                    <select class="form-control mb-2 border-light fs-1 custom-select" id="title" name="title" required>
+                                        <option value="" disabled selected>Select your title</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control mb-2 border-light fs-1 custom-select" name="gender" required>
+                                        <option value="" disabled selected>Select your gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control mb-2 border-light fs-1 custom-select" name="education_level" required>
+                                        <option value="" disabled selected>Select your education level</option>
+                                        <option value="Bachelor's">Bachelor’s</option>
+                                        <option value="Master's">Master’s</option>
+                                        <option value="PhD">PhD</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control mb-2 border-light fs-1" type="number" name="age" placeholder="Your age" min="14" max="100" required />
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control mb-2 border-light fs-1" type="number" name="experience" placeholder="Experience year" min="0" max="50" required />
+                                </div>
+                                <div class="form-group text-center">
+                                    <button class="btn btn-success text-dark fs-1" type="submit">Guess now</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
+</main>
+<!-- Include jQuery and jQuery UI JS -->
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        if (typeof jQuery === 'undefined') {
+            alert("jQuery is not loaded!");
+        } else {
+            console.log("jQuery is loaded correctly.");
+        }
     
-  </section>
-  </div>
-  </main>
+        $.getJSON("{{ url_for('job_titles') }}", function(data) {
+            console.log("Job titles loaded:", data);
+            var $title = $('#title');
+            $title.empty(); // Clear any existing options
+            $title.append('<option value="" disabled selected>Select your title</option>'); // Add the default option
+            $.each(data, function(index, value) {
+                $title.append($('<option>').text(value).attr('value', value));
+            });
+        }).fail(function(jqxhr, textStatus, error) {
+            console.error("Failed to load job titles:", textStatus, error);
+        });
+    });
+</script>
 </body>
-
 {% endblock %}
