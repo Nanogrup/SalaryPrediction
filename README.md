@@ -55,6 +55,20 @@ docker run -p 5000:5000 flask-app
 http://127.0.0.1:5000/
 ```
 
+## With Virtual Environment(venv): 
+### 2. Install Python
+### 3. Create venv directory
+```bash
+python3 -m virtual environmentpath/to/venv
+```
+### 4. Activate virtual environment
+```bash
+source path/to/venv/bin/activate
+```
+### 5. Install dependencies(flask,...)
+### 6. Start the flask app
+### 7. Open a web browser and go to url
+
 ## Files and Directories
 
 - `app.py`: Main Flask application file.
@@ -62,17 +76,25 @@ http://127.0.0.1:5000/
 - `Dockerfile`: Docker configuration file.
 - `templates/`: Directory containing HTML templates.
 - `static/`: Directory containing static files like CSS.
-
+- `data/`: Directory containing csv file and jupyter notebooks.
+- `machine_learning.py`: Model training application file.
+- `salary_model.pkl`: Model file.
 ```csharp
 flask_app/
     ├── app.py
+    ├── machine_learning.py
     ├── requirements.txt
     ├── Dockerfile
+    ├── salary_model.pkl
     ├── templates/
     │   ├── base.html
     │   ├── index.html
     │   ├── salary_prediction.html
     │   └── data_analysis.html
-    └── static/
-        └── style.css
+    │   └── result.html
+    ├── static/
+    │    └── style.css
+    ├── data/
+    │   ├── Salary Analysis.ipynb
+    │   └── salaryData.csv
 ```

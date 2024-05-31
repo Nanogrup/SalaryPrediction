@@ -16,5 +16,8 @@ COPY . .
 # Expose the port on which the Flask app will run
 EXPOSE 5000
 
+# Train the model and save the pickle file
+RUN python machine_learning.py
+
 # Define the command to run the Flask app
 CMD ["python", "app.py"]
