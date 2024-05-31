@@ -92,9 +92,9 @@ flask_app/
     │   ├── salary_prediction.html
     │   └── data_analysis.html
     │   └── result.html
-    └── static/
-        └── style.css
+    ├── static/
+    │    └── style.css
     ├── data/
-        ├── Salary Analysis.ipynb
-        ├── salaryData.csv
+    │   ├── Salary Analysis.ipynb
+    │   └── salaryData.csv
 ```
