@@ -5,6 +5,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+      .graph-container {
+          display: flex;
+          justify-content: space-between;
+      }
+      .graph {
+          width: 50%;
+      }
+  </style>
 </head>
 
 <body style="background-color: #0a2640 !important">
@@ -20,10 +30,26 @@
                     <p class="text-white ">
                       This prediction was made with a model that has {{ accuracy }} % accuracy.
                     </p>
+                    <h2 class="text-white">User Information:</h2>
+                    <ul class="text-white">
+                        <li>Title: {{ user_inputs.title }}</li>
+                        <li>Age: {{ user_inputs.age }}</li>
+                        <li>Experience: {{ user_inputs.experience }}</li>
+                        <li>Gender: {{ user_inputs.gender }}</li>
+                        <li>Education Level: {{ user_inputs.education_level }}</li>
+                    </ul>
                     <p class="text-white py-lg-3 py-2"></p>
                     <a href="{{ url_for('salary_prediction') }}" class="btn btn-outline-light center">Back to Form</a>
                   </div>
-                </div>          
+                </div>  
+                <div class="graph-container">
+                  <div class="graph">
+                      {{ error_dist_div | safe }}
+                  </div>
+                  <div class="graph">
+                      {{ actual_vs_predicted_div | safe }}
+                  </div>
+                </div>        
               </div><!-- end of .container-->
             </section><!-- <section> close ============================-->
             <!-- ============================================-->

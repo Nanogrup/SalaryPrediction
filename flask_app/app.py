@@ -18,15 +18,11 @@ def delete_model_file():
         print(f"Model file '{model_file}' deleted.")
 
 # Load the trained model, label encoder, and scaler
-if os.path.exists('salary_model.pkl'):
-    with open('salary_model.pkl', 'rb') as file:
-        model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler, accuracy = pickle.load(file)
-else:
-    print("Training model...")
-    train_and_save_model()
-    print("Model training completed.")
-    with open('salary_model.pkl', 'rb') as file:
-        model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler, accuracy  = pickle.load(file)
+print("Training model...")
+error_dist_div, actual_vs_predicted_div = train_and_save_model()
+print("Model training completed.")
+with open('salary_model.pkl', 'rb') as file:
+    model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler, accuracy  = pickle.load(file)
 
 @app.route('/')
 def index():
@@ -69,7 +65,19 @@ def predict():
     inverse_normalization_prediction = scaler.inverse_transform(prediction.reshape(-1, 1));
     print(inverse_normalization_prediction[0][0])
     prediction_parts = str(inverse_normalization_prediction[0][0]).split('.')
-    return render_template('result.html', prediction=prediction_parts[0], accuracy= round(accuracy * 100, 2))
+
+    user_inputs = {
+        'title': title,
+        'age': age,
+        'experience': experience,
+        'gender': gender,
+        'education_level': education_level
+    }
+
+
+    return render_template('result.html', prediction=prediction_parts[0], accuracy= round(accuracy * 100, 2),
+                            error_dist_div=error_dist_div, actual_vs_predicted_div=actual_vs_predicted_div,
+                            user_inputs = user_inputs)
 
 @app.route('/job_titles')
 def job_titles():
