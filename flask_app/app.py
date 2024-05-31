@@ -8,7 +8,7 @@ from sklearn.preprocessing import MinMaxScaler
 from machine_learning import train_and_save_model
 
 app = Flask(__name__)
-model, label_encoder, scaler = None, None, None
+model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler, accuracy = None, None, None, None, None, None
 
 # Function to delete the model file when app is finished
 def delete_model_file():
@@ -20,13 +20,13 @@ def delete_model_file():
 # Load the trained model, label encoder, and scaler
 if os.path.exists('salary_model.pkl'):
     with open('salary_model.pkl', 'rb') as file:
-        model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler = pickle.load(file)
+        model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler, accuracy = pickle.load(file)
 else:
     print("Training model...")
     train_and_save_model()
     print("Model training completed.")
     with open('salary_model.pkl', 'rb') as file:
-        model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler = pickle.load(file)
+        model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler, accuracy  = pickle.load(file)
 
 @app.route('/')
 def index():
@@ -69,7 +69,7 @@ def predict():
     inverse_normalization_prediction = scaler.inverse_transform(prediction.reshape(-1, 1));
     print(inverse_normalization_prediction[0][0])
     prediction_parts = str(inverse_normalization_prediction[0][0]).split('.')
-    return render_template('result.html', prediction=prediction_parts[0])
+    return render_template('result.html', prediction=prediction_parts[0], accuracy= round(accuracy * 100, 2))
 
 @app.route('/job_titles')
 def job_titles():

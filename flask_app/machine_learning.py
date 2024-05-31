@@ -54,10 +54,12 @@ def train_and_save_model():
     y_pred = model.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
+    accuracy = model.score(X_test, y_test)  
 
     print(f"Mean Squared Error: {mse}")
     print(f"R^2 Score: {r2}")
+    print(f"Accuracy: {accuracy}")
 
     # Save the trained model, encoders, and scaler
     with open('salary_model.pkl', 'wb') as file:
-        pickle.dump((model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler_salary), file)
+        pickle.dump((model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler_salary, accuracy), file)

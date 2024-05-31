@@ -17,6 +17,9 @@
                 <div class="row align-items-center py-lg-8 py-6">
                   <div class="col-lg-6 text-center text-lg-start">
                     <h1 class="text-white fs-5 fs-xl-6" style="font-weight: bold;">Your predicted annual salary is: ${{ prediction }}</h1>
+                    <p class="text-white ">
+                      This prediction was made with a model that has {{ accuracy }} % accuracy.
+                    </p>
                     <p class="text-white py-lg-3 py-2"></p>
                     <a href="{{ url_for('salary_prediction') }}" class="btn btn-outline-light center">Back to Form</a>
                   </div>
