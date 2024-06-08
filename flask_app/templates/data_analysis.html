@@ -1,33 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        input[type="file"]{
+            border:2px solid lightblue;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        input[type="submit"]{
+            margin-top: 10px;
+            font-size: 24px;
+            background-color: lightblue;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 15px;
+        }
+    </style>
+</head>
 <body style="background-color: #0a2640">
     <main class="main" id="top">
-        <div class="bg-dark" >
+        <div class="bg-dark">
             <img class="img-fluid position-absolute end-0" src="{{ url_for('static',filename='hero/hero-bg.png')}}" alt=""/>
-            <section >
+            <section>
+                
                 <div class="container bg-dark overflow-hidden rounded-1" style="background-color: #ffffff !important;">
                     <div class="bg-holder" style="background-image:url(assets/img/promo/promo-bg.png);"></div>
-       
                     <div>
-                        <h2 >Correlation Matrix</h2>
-                        <img src="{{ url_for('static', filename='indir.png') }}" alt="Correlation Matrix">
+                        <h2>Correlation Matrix</h2>
+                        {{ correlation_matrix_plot | safe }}
                     </div>
                     <div style="padding-top: 5rem;">
-                        <h2 >Salary Comparison by Gender</h2>
-                        <img src="{{ url_for('static', filename='gender_salary_plot.png') }}" alt="Salary Comparison by Gender">
-                    </div>
-                    <div >
-                        <h2 >Salary Analysis by Age and Experience</h2>
-                        <img src="{{ url_for('static', filename='age_experience_salary_plot.png') }}" alt="Salary Analysis by Age and Experience">
+                        <h2>Salary Comparison by Gender</h2>
+                        {{ gender_salary_plot | safe }}
                     </div>
                     <div>
-                        <h2 >Salary Distribution by Education Level</h2>
-                        <img src="{{ url_for('static', filename='education_salary_plot.png') }}" alt="Salary Distribution by Education Level">
+                        <h2>Salary Analysis by Age and Experience</h2>
+                        {{ age_experience_salary_plot | safe }}
                     </div>
                     <div>
-                        <h2 >Salary Analysis by Gender and Education Level</h2>
-                        <img src="{{ url_for('static', filename='indir_2.png') }}" alt="salary analysis by gender and education level">
+                        <h2>Salary Distribution by Education Level</h2>
+                        {{ education_salary_plot | safe }}
+                    </div>
+                    <div>
+                        <h2>Salary Breakdown by 20 Most Common Job Titles</h2>
+                        {{ job_title_salary_plot | safe }}
                     </div>
                 </div>
             </section>

@@ -12,7 +12,7 @@ from plotly.subplots import make_subplots
 
 def train_and_save_model():
     # read data
-    df = pd.read_csv("data/salaryData.csv")
+    df = pd.read_csv("data/Salary_Data.csv")
 
     # Fill missing values with mean 
     # only for numerical columns
@@ -22,8 +22,8 @@ def train_and_save_model():
     # Fill missing values with mode
     # for categorical columns
     df['Gender'].fillna(df['Gender'].mode()[0], inplace=True)
-    df['Education Level'].fillna(df['Education Level'].mode()[0], inplace=True)
-    df['Job Title'].fillna(df['Job Title'].mode()[0], inplace=True)
+    df['Education_Level'].fillna(df['Education_Level'].mode()[0], inplace=True)
+    df['Job_Title'].fillna(df['Job_Title'].mode()[0], inplace=True)
 
     # encode categorical columns 
     data = df.copy()  
@@ -31,15 +31,15 @@ def train_and_save_model():
     label_encoder_education = LabelEncoder()
     label_encoder_title = LabelEncoder()
     data['Gender'] = label_encoder_gender.fit_transform(data['Gender'])
-    data['Education Level'] = label_encoder_education.fit_transform(data['Education Level'])
-    data['Job Title'] = label_encoder_title.fit_transform(data['Job Title'])
+    data['Education_Level'] = label_encoder_education.fit_transform(data['Education_Level'])
+    data['Job_Title'] = label_encoder_title.fit_transform(data['Job_Title'])
 
     # normalization for numerical columns
     scaler_age = MinMaxScaler()
     scaler_experience = MinMaxScaler()
     scaler_salary = MinMaxScaler()
     data['Age'] = scaler_age.fit_transform(data['Age'].values.reshape(-1, 1))
-    data['Years of Experience'] = scaler_experience.fit_transform(data['Years of Experience'].values.reshape(-1, 1))
+    data['Years_of_Experience'] = scaler_experience.fit_transform(data['Years_of_Experience'].values.reshape(-1, 1))
     data['Salary'] = scaler_salary.fit_transform(data['Salary'].values.reshape(-1, 1))
     # Split features and output 
     X = data.drop('Salary', axis=1)

@@ -11,8 +11,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import io
 import base64
+import json
 import mpld3
+import plotly.graph_objects as go
+import plotly.graph_objs as go
 import plotly.express as px
+import plotly.utils
 app = Flask(__name__)
 model, label_encoder_gender, label_encoder_education, label_encoder_title, scaler, accuracy = None, None, None, None, None, None
 
@@ -31,125 +35,72 @@ def save_plot_as_image(fig, filename):
     with open(f'static/{filename}.png', 'wb') as img_file:
         img_file.write(base64.b64decode(img_string))
 
+
 def cinsiyetXmaas(data):
-    fig, ax = plt.subplots(figsize=(12, 6))
-    sns.violinplot(x='Gender', y='Salary', data=data, ax=ax)  
-    ax.set_title('Salary Comparison by Gender')
-    ax.set_xlabel('Gender')
-    ax.set_ylabel('Salary')
-    save_plot_as_image(fig, 'gender_salary_plot')
-    plt.close(fig)
+    fig = go.Figure()
+    fig.add_trace(go.Violin(x=data['Gender'], y=data['Salary'], box_visible=True, meanline_visible=True))
+    fig.update_layout(title='Salary Comparison by Gender', xaxis_title='Gender', yaxis_title='Salary')
+    return fig.to_html(full_html=False)
+
 
 def yasDeneyimXmaas(data):
-    fig, ax = plt.subplots(figsize=(12, 6))
-    sns.scatterplot(x='Age', y='Salary', hue='Years of Experience', data=data, palette='inferno', s=100, ax=ax)
-    ax.set_title('Salary Analysis by Age and Experience')
-    ax.set_xlabel('Age')
-    ax.set_ylabel('Salary')
-    save_plot_as_image(fig, 'age_experience_salary_plot')
-    plt.close(fig)
+    # Geçersiz değerleri ortalama ile değiştirme
+    mean_experience = data['Years_of_Experience'].mean()
+    data['Years_of_Experience'].fillna(mean_experience, inplace=True)
+
+    # Scatter plot oluşturma
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data['Age'], y=data['Salary'], mode='markers', marker=dict(size=data['Years_of_Experience'], color=data['Years_of_Experience'], showscale=True)))
+    fig.update_layout(title='Salary Analysis by Age and Experience', xaxis_title='Age', yaxis_title='Salary')
+    
+    # JSON formatına dönüştürerek çıktıyı al
+    return fig.to_html(full_html=False)
+
+
 
 def egitimSeviyesiXmaas(data):
-    fig, ax = plt.subplots(figsize=(12, 6))
-    sns.boxplot(x='Education Level', y='Salary', data=data, ax=ax)
-    ax.set_title('Salary Distribution by Education Level')
-    ax.set_xlabel('Education Level')
-    ax.set_ylabel('Salary')
-    save_plot_as_image(fig, 'education_salary_plot')
-    plt.close(fig)
+    fig = go.Figure()
+    fig.add_trace(go.Box(x=data['Education_Level'], y=data['Salary']))
+    fig.update_layout(title='Salary Distribution by Education Level', xaxis_title='Education_Level', yaxis_title='Salary')
+    return fig.to_html(full_html=False)
 
 def plot_correlation_matrix(df):
     numeric_df = df.select_dtypes(include=['int', 'float'])
-    fig, ax = plt.subplots(figsize=(10, 8))
-    sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm', fmt='.2f')
-    ax.set_title('Correlation Matrix')
-    save_plot_as_image(fig, 'correlation_matrix_plot')
-    plt.close(fig)
+    corr = numeric_df.corr()
+    
+    fig = go.Figure(data=go.Heatmap(z=corr.values, x=corr.index.values, y=corr.columns.values, colorscale='Viridis'))
+    fig.update_layout(title='Correlation Matrix')
+    return fig.to_html(full_html=False)
 
 def plot_top_20_job_titles_salary(df):
-    """
-    En yaygın 20 iş unvanı için maaş dağılımını gösteren box plot oluşturur.
-
-    Parametre:
-    df (pandas.DataFrame): Job Title ve Salary kolonlarına sahip veri çerçevesi.
-    """
-
-    # En yaygın 20 iş unvanı için veri çerçevesi oluşturma
-    top_20_job_titles = df['Job Title'].value_counts().index[:20]
-    df_top_20 = df[df['Job Title'].isin(top_20_job_titles)]
-
-    fig, ax = plt.subplots(figsize=(12, 8))
-    sns.boxplot(y='Job Title', x='Salary', data=df_top_20, ax=ax)
-
-    # Grafik başlığı ve eksen etiketlerini beyaz renge ayarlama
-    ax.set_title('En Yaygın 20 İş Unvanına Göre Maaş Dağılımı', color='white')
-    ax.set_xlabel('Maaş', color='white')
-    ax.set_ylabel('İş Unvanı', color='white')
-
-    # X ve Y eksen renklerini beyaz olarak ayarlama
-    ax.tick_params(axis='x', colors='white')
-    ax.tick_params(axis='y', colors='white')
-
-    # Kenarlık renklerini beyaz olarak ayarlama
-    for spine in ax.spines.values():
-        spine.set_edgecolor('white')
-
-    # Etiket renklerini beyaz olarak ayarlama
-    ax.xaxis.label.set_color('white')
-    ax.yaxis.label.set_color('white')
-
-    # Arka plan şeffaflığı
-    fig.patch.set_alpha(0.0)
-    ax.patch.set_alpha(0.0)
-
-    # Y eksen etiketini sola kaydırma
-    ax.yaxis.set_label_position('left')
-    ax.set_ylabel('Job Title', labelpad=20)
-
-    # Grafik düzeni ayarla
-    plt.tight_layout()
-
-    # Boxplot'u HTML'e dönüştürme
-    return mpld3.fig_to_html(fig)
+    top_20_job_titles = df['Job_Title'].value_counts().index[:20]
+    df_top_20 = df[df['Job_Title'].isin(top_20_job_titles)]
+    fig = go.Figure()
+    for job_title in top_20_job_titles:
+        df_job = df_top_20[df_top_20['Job_Title'] == job_title]
+        fig.add_trace(go.Box(y=df_job['Salary'], name=job_title))
+    fig.update_layout(title='Salary Breakdown by 20 Most Common Job Titles', yaxis_title='Salary')
+    return fig.to_html(full_html=False)
 
 def plot_salary_relationships(df, columns, target='Salary'):
-    """
-    Verilen sütunlar ile maaş arasındaki ilişkiyi gösteren regresyon çizgili grafikleri oluşturur.
-
-    Parametreler:
-    df (pandas.DataFrame): Veriyi içeren veri çerçevesi.
-    columns (list): Maaş ile ilişkilendirilmek istenen sütunların listesi.
-    target (str): İlişki kurulacak hedef sütun, varsayılan 'Salary'.
-    """
     plots = []
     for col in columns:
-        fig, ax = plt.subplots(figsize=(10, 6))
-        sns.lmplot(x=col, y=target, data=df, aspect=1.5)  # Burada ax parametresi kaldırıldı
-        plt.title(f'Salary vs {col.capitalize()} with Regression Line')
-        plt.xlabel(col.capitalize())
-        plt.ylabel(target.capitalize())
-        plot_html = mpld3.fig_to_html(fig)
-        plots.append(plot_html)
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=df[col], y=df[target], mode='markers', name='Actual'))
+        fig.add_trace(go.Scatter(x=df[col], y=model.predict(df[[col]]), mode='lines', name='Predicted'))
+        fig.update_layout(title=f'Salary vs {col.capitalize()} with Regression Line', xaxis_title=col.capitalize(), yaxis_title='Salary')
+        plots.append(fig.to_html(full_html=False))
     return plots
-
 
 def plot_salary_vs_columns(df, columns, width=2200, height=2600):
-    """
-    Verilen sütunlara göre maaşın kutu grafiği ile dağılımını gösteren Plotly grafiği oluşturur.
-
-    Parametreler:
-    df (pandas.DataFrame): Veriyi içeren veri çerçevesi.
-    columns (list): Maaş ile ilişkilendirilmek istenen sütunların listesi.
-    width (int): Grafik genişliği, varsayılan 2200.
-    height (int): Grafik yüksekliği, varsayılan 2600.
-    """
     plots = []
     for col in columns:
-        fig = px.box(df, x=col, y='Salary', title=f'Salary vs {col.capitalize()}',
-                     width=width, height=height)
-        plot_html = fig.to_html(full_html=False)
-        plots.append(plot_html)
+        fig = go.Figure()
+        fig.add_trace(go.Box(x=df[col], y=df['Salary'], name='Salary'))
+        fig.update_layout(title=f'Salary vs {col.capitalize()}', xaxis_title=col.capitalize(), yaxis_title='Salary', width=width, height=height)
+        plots.append(fig.to_html(full_html=False))
     return plots
+
 # Load the trained model, label encoder, and scaler
 if os.path.exists('salary_model.pkl'):
     with open('salary_model.pkl', 'rb') as file:
@@ -177,7 +128,7 @@ def salary_prediction():
 
 @app.route('/data_analysis')
 def data_analysis():
-    df = pd.read_csv('data/salaryData.csv')
+    df = pd.read_csv('data/Salary_Data.csv')
     gender_salary_plot = cinsiyetXmaas(df)
     age_experience_salary_plot = yasDeneyimXmaas(df)
     education_salary_plot = egitimSeviyesiXmaas(df)
@@ -205,12 +156,12 @@ def predict():
     
     # Create a DataFrame for the input
     input_data = pd.DataFrame([[age, gender, education_level, title, experience]], 
-                              columns=['Age', 'Gender', 'Education Level', 'Job Title', 'Years of Experience'])
+                              columns=['Age', 'Gender', 'Education_Level', 'Job_Title', 'Years_of_Experience'])
     
     # Apply the same encoding and scaling as in training
     input_data['Gender'] = label_encoder_gender.transform(input_data['Gender'])
-    input_data['Education Level'] = label_encoder_education.transform(input_data['Education Level'])
-    input_data['Job Title'] = label_encoder_title.transform(input_data['Job Title'])
+    input_data['Education_Level'] = label_encoder_education.transform(input_data['Education_Level'])
+    input_data['Job_Title'] = label_encoder_title.transform(input_data['Job_Title'])
 
     # During prediction
     print("Column names of input data during prediction:", input_data.columns.tolist())
@@ -237,8 +188,8 @@ def predict():
 
 @app.route('/job_titles')
 def job_titles():
-    df = pd.read_csv('data/salaryData.csv')
-    titles = df['Job Title'].dropna().unique().tolist()
+    df = pd.read_csv('data/Salary_Data.csv')
+    titles = df['Job_Title'].dropna().unique().tolist()
     return jsonify(titles)
 
 # Register a function to run when the Flask application is shutting down
