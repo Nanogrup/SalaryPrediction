@@ -1,9 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h2>Data Analysis Page</h2>
-    <p>This is where the data analysis information will be displayed.</p>
-    <!-- Data analysis content can be added here -->
-</div>
+<body style="background-color: #0a2640">
+    <main class="main" id="top">
+        <div class="bg-dark" >
+            <img class="img-fluid position-absolute end-0" src="{{ url_for('static',filename='hero/hero-bg.png')}}" alt=""/>
+            <section >
+                <div class="container bg-dark overflow-hidden rounded-1" style="background-color: #ffffff !important;">
+                    <div class="bg-holder" style="background-image:url(assets/img/promo/promo-bg.png);"></div>
+       
+                    <div>
+                        <h2 >Correlation Matrix</h2>
+                        <img src="{{ url_for('static', filename='indir.png') }}" alt="Correlation Matrix">
+                    </div>
+                    <div style="padding-top: 5rem;">
+                        <h2 >Salary Comparison by Gender</h2>
+                        <img src="{{ url_for('static', filename='gender_salary_plot.png') }}" alt="Salary Comparison by Gender">
+                    </div>
+                    <div >
+                        <h2 >Salary Analysis by Age and Experience</h2>
+                        <img src="{{ url_for('static', filename='age_experience_salary_plot.png') }}" alt="Salary Analysis by Age and Experience">
+                    </div>
+                    <div>
+                        <h2 >Salary Distribution by Education Level</h2>
+                        <img src="{{ url_for('static', filename='education_salary_plot.png') }}" alt="Salary Distribution by Education Level">
+                    </div>
+                    <div>
+                        <h2 >Salary Analysis by Gender and Education Level</h2>
+                        <img src="{{ url_for('static', filename='indir_2.png') }}" alt="salary analysis by gender and education level">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
 {% endblock %}

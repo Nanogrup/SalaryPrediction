@@ -2,6 +2,28 @@
 
 This is a basic Flask application Dockerized for easy deployment.
 
+## Project Overview 
+### Home Page
+![Ekran Resmi 2024-06-02 01 13 07](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/43cda262-196c-444f-a65b-20ac83d12a2b)
+
+### Data Analysis Page
+![Ekran Resmi 2024-06-02 01 20 19](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/917fd502-4f4d-4386-b0c9-f9822826c7ed)
+![Ekran Resmi 2024-06-02 01 20 06](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/2dabc693-d54b-4046-bc18-caf184fa41ea)
+![Ekran Resmi 2024-06-02 01 20 00](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/87068207-2c65-4d3a-bd7d-16c26e52eb6b)
+![Ekran Resmi 2024-06-02 01 19 53](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/af4192ff-5dce-48d7-b9b6-c8fb399cdcae)
+![Ekran Resmi 2024-06-02 01 19 47](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/f8b2d0e8-db37-46c6-92c1-a95f3de3887a)
+![Ekran Resmi 2024-06-02 01 19 42](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/67e6c1e5-6396-4259-8a1a-3a68860f8ce6)
+
+
+### Salary Prediction Page
+![Ekran Resmi 2024-06-02 01 14 03](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/8ed339fb-4bc0-4f17-be88-8d46f16c6ade)
+![Ekran Resmi 2024-06-02 01 14 09](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/d5c07f05-976e-4a88-9736-375ae8741b85)
+
+### Result Page
+![Ekran Resmi 2024-06-02 01 14 29](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/d17c140b-f767-45e1-8aef-97cc801b0fce)
+![Ekran Resmi 2024-06-02 01 14 42](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/0b3f894d-b9c8-4803-bf6a-d2a45d1f7d89)
+
+
 ## Setup Instructions
 
 ### 1. Clone the Repository
@@ -55,6 +77,20 @@ docker run -p 5000:5000 flask-app
 http://127.0.0.1:5000/
 ```
 
+## With Virtual Environment(venv): 
+### 2. Install Python
+### 3. Create venv directory
+```bash
+python3 -m virtual environmentpath/to/venv
+```
+### 4. Activate virtual environment
+```bash
+source path/to/venv/bin/activate
+```
+### 5. Install dependencies(flask,...)
+### 6. Start the flask app
+### 7. Open a web browser and go to url
+
 ## Files and Directories
 
 - `app.py`: Main Flask application file.
@@ -62,17 +98,25 @@ http://127.0.0.1:5000/
 - `Dockerfile`: Docker configuration file.
 - `templates/`: Directory containing HTML templates.
 - `static/`: Directory containing static files like CSS.
-
+- `data/`: Directory containing csv file and jupyter notebooks.
+- `machine_learning.py`: Model training application file.
+- `salary_model.pkl`: Model file.
 ```csharp
 flask_app/
     ├── app.py
+    ├── machine_learning.py
     ├── requirements.txt
     ├── Dockerfile
+    ├── salary_model.pkl
     ├── templates/
     │   ├── base.html
     │   ├── index.html
     │   ├── salary_prediction.html
     │   └── data_analysis.html
-    └── static/
-        └── style.css
+    │   └── result.html
+    ├── static/
+    │    └── style.css
+    ├── data/
+    │   ├── Salary Analysis.ipynb
+    │   └── salaryData.csv
 ```
