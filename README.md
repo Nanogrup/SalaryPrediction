@@ -2,6 +2,9 @@
 
 This is a basic Flask application Dockerized for easy deployment. 
 If you would like to visit our website : [Our Website](https://salaryprediction-56qr.onrender.com/) 
+## Final version of the project 
+
+https://github.com/Nanogrup/SalaryPrediction/assets/84244385/6da5e577-3aaf-4f92-bd43-d67cb5b6ce21
 
 ## Project Overview 
 ### Home Page
@@ -14,6 +17,8 @@ If you would like to visit our website : [Our Website](https://salaryprediction-
 ![Ekran Resmi 2024-06-02 01 19 53](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/af4192ff-5dce-48d7-b9b6-c8fb399cdcae)
 ![Ekran Resmi 2024-06-02 01 19 47](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/f8b2d0e8-db37-46c6-92c1-a95f3de3887a)
 ![Ekran Resmi 2024-06-02 01 19 42](https://github.com/Nanogrup/SalaryPrediction/assets/103145955/67e6c1e5-6396-4259-8a1a-3a68860f8ce6)
+
+
 
 
 ### Salary Prediction Page
