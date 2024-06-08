@@ -1,7 +1,10 @@
 # SalaryPrediction Project -Nano Grup
 
 This is a basic Flask application Dockerized for easy deployment. 
-If you would like to visit our website : [Our Website](https://salaryprediction-56qr.onrender.com/) 
+## If you would like to visit our website :
+
+[Our Website](https://salaryprediction-56qr.onrender.com/) 
+
 ## Final version of the project 
 
 https://github.com/Nanogrup/SalaryPrediction/assets/84244385/6da5e577-3aaf-4f92-bd43-d67cb5b6ce21
